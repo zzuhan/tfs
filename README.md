@@ -56,3 +56,17 @@ client.upload(filepath, function (err, info) {
 ## Contact
 
 * ![mk2](http://aita.alibaba-inc.com/avatar/4451-180-20110818155148.jpeg) [苏千](http://aita.alibaba-inc.com/043624)
+
+## Authors
+
+```bash
+$ git summary 
+
+ project  : node-tfs
+ repo age : 80 minutes
+ active   : 2 days
+ commits  : 2
+ files    : 12
+ authors  : 
+     2  苏千                  100.0%
+```

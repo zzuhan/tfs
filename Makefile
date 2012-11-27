@@ -1,5 +1,5 @@
 TESTS = test/*.test.js
-REPORTER = spec
+REPORTER = tap
 TIMEOUT = 5000
 JSCOVERAGE = ./node_modules/jscover/bin/jscover
 

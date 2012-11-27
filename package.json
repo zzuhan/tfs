@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/fengmk2/node-tfs.git"
+    "url": "git@gitlab.alibaba-inc.com:node-tfs.git"
   },
   "keywords": [
     "node-tfs", "tfs", "cdn"

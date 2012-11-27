@@ -75,10 +75,10 @@ client.upload(filepath, function (err, info) {
 $ git summary 
 
  project  : node-tfs
- repo age : 80 minutes
+ repo age : 2 hours
  active   : 2 days
- commits  : 2
+ commits  : 6
  files    : 12
  authors  : 
-     2  苏千                  100.0%
+     6  苏千                  100.0%
 ```

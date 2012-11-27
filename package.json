@@ -1,6 +1,6 @@
 {
   "name": "tfs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "tfs node client, http://baike.corp.taobao.com/index.php/CS_RD/tfs_new",
   "main": "index.js",
   "scripts": {

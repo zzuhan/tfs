@@ -15,13 +15,31 @@ $ npm install tnpm -g
 $ tnpm install tfs
 ```
 
+## API
+
+```js
+/**
+ * Create TFS RESTFul client.
+ * 
+ * @param {Object} options
+ *  - {String} appkey
+ *  - {String} appname
+ *  - {Number} [uploadTimeout], upload max timeout, default is 60s.
+ *  - {String} [rootServer], 'host:port' format, default is 'restful-store.vip.tbsite.net:3800'.
+ *  - {Array} [imageServers], default is CDN online servers list.
+ * @return {Client}
+ */
+function createClient(options);
+```
+
 ## Usage
 
 ```js
 var tfs = require('tfs');
 
 var client = tfs.createClient({
-  rootServer: 'restful-store.vip.tbsite.net:3800',
+  rootServer: '$host:port',
+  appname: '$your_appname',
   appkey: '$your_appkey',
 });
 

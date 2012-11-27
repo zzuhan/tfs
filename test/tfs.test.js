@@ -25,12 +25,11 @@ describe('tfs.test.js', function () {
   it('should throw missing appkey error', function () {
     (function () {
       tfs.createClient();
-    }).should.throw('missing appkey or appname');
+    }).should.throw('missing appkey');
   });
 
   describe('upload()', function () {
     var client = tfs.createClient({
-      appname: 'tfscom',
       appkey: 'tfscom',
       rootServer: '10.232.4.44:3800',
       imageServers: [
@@ -132,7 +131,6 @@ describe('tfs.test.js', function () {
 
     before(function () {
       client = tfs.createClient({
-        appname: 'tfscom',
         appkey: 'tfscom',
         rootServer: '10.232.4.44:3800'
       });

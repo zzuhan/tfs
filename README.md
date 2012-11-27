@@ -23,13 +23,25 @@ $ tnpm install tfs
  * 
  * @param {Object} options
  *  - {String} appkey
- *  - {String} appname
+ *  - {String} [appLocation], default is 'tfscom'.
  *  - {Number} [uploadTimeout], upload max timeout, default is 60s.
  *  - {String} [rootServer], 'host:port' format, default is 'restful-store.vip.tbsite.net:3800'.
  *  - {Array} [imageServers], default is CDN online servers list.
  * @return {Client}
  */
 function createClient(options);
+
+/**
+ * Upload a file.
+ * @param {String} filepath
+ * @param {Number} timeout, default is `client.uploadTimeout`.
+ * @param {Function(err, info)} callback
+ *  - {Object} info
+ *   - {String} name, tfs file name
+ *   - {String} url, CDN url
+ *   - {Number} size, file size
+ */
+Client.prototype.upload = function (filename, timeout, callback);
 ```
 
 ## Usage

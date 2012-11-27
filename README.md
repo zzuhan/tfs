@@ -51,7 +51,6 @@ var tfs = require('tfs');
 
 var client = tfs.createClient({
   rootServer: '$host:port',
-  appname: '$your_appname',
   appkey: '$your_appkey',
 });
 

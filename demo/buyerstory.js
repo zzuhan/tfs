@@ -23,6 +23,10 @@ client.on('servers', function (servers) {
   console.log(servers);
 });
 
+client.on('refreshError', function (err) {
+  throw err;
+});
+
 var logopath = path.join(path.dirname(__dirname), 'logo.png');
 
 client.uploadFile(logopath, '320', 'tfs.png', function (err, info) {

@@ -1,4 +1,15 @@
 
+0.0.3 / 2012-11-28 
+==================
+
+  * add refreshError listen
+  * add demo
+  * rename tfs.js to client.js
+  * support removeFile
+  * coverage getAppid()
+  * add uploadFile()
+  * update readme
+
 0.0.2 / 2012-11-28 
 ==================
 

@@ -15,6 +15,37 @@ $ npm install tnpm -g
 $ tnpm install tfs
 ```
 
+## Usage
+
+```js
+var tfs = require('tfs');
+
+var client = tfs.createClient({
+  rootServer: '$host:port',
+  appkey: '$your_appkey',
+});
+
+// 上传文件
+client.upload(filepath, function (err, info) {
+  console.log(info);
+  // { 
+  //   filename: 'T2xRETBgZv1RCvBVdK.jpg', 
+  //   url: 'http://img1.tbcdn.cn/tfscom/T2xRETBgZv1RCvBVdK.jpg',
+  //   size: 1024
+  // }
+});
+
+// 上传自定义文件名的文件
+client.uploadFile(filepath, '320', 'foo.jpg', function (err, info) {
+  console.log(info);
+  // { 
+  //   filename: 'L1/1/320/foo.jpg', 
+  //   url: 'http://img1.tbcdn.cn/L1/1/320/foo.jpg',
+  //   size: 1984
+  // }
+});
+```
+
 ## API
 
 ```js
@@ -56,37 +87,16 @@ Client.prototype.upload = function (filename, callback, timeout);
  * @param {Number} [timeout]
  */
 Client.prototype.uploadFile = function (filepath, uid, filename, options, callback, timeout);
-```
 
-## Usage
-
-```js
-var tfs = require('tfs');
-
-var client = tfs.createClient({
-  rootServer: '$host:port',
-  appkey: '$your_appkey',
-});
-
-// 上传文件
-client.upload(filepath, function (err, info) {
-  console.log(info);
-  // { 
-  //   filename: 'T2xRETBgZv1RCvBVdK.jpg', 
-  //   url: 'http://img1.tbcdn.cn/tfscom/T2xRETBgZv1RCvBVdK.jpg',
-  //   size: 1024
-  // }
-});
-
-// 上传自定义文件名的文件
-client.uploadFile(filepath, '320', 'foo.jpg', function (err, info) {
-  console.log(info);
-  // { 
-  //   filename: 'L1/1/320/foo.jpg', 
-  //   url: 'http://img1.tbcdn.cn/L1/1/320/foo.jpg',
-  //   size: 1984
-  // }
-});
+/**
+ * Remove a custom name file.
+ * 
+ * @param {String} uid
+ * @param {String} filename
+ * @param {Function(err, success)} callback
+ * @param {Number} [timeout]
+ */
+Client.prototype.removeFile = function (uid, filename, callback, timeout);
 ```
 
 ## Contact

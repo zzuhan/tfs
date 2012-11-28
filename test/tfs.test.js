@@ -350,4 +350,36 @@ describe('tfs.test.js', function () {
     });
   });
 
+  describe('removeFile()', function () {
+    it('should remove not exists file success', function (done) {
+      tfsClient.removeFile('320', 'noexists.jpg', function (err, success) {
+        should.not.exist(err);
+        should.ok(success);
+        done();
+      });
+    });
+
+    it('should return error when uid wrong', function (done) {
+      tfsClient.removeFile('wronguid', 'noexists.jpg', function (err, success) {
+        should.exist(err);
+        err.message.should.equal('TFS request error, Http status 400')
+        should.not.exist(success);
+        done();
+      });
+    });
+
+    it('should remove 320/logo.png', function (done) {
+      tfsClient.uploadFile(logopath, 320, 'logo.png', function (err, info) {
+        should.not.exist(err);
+        info.should.have.keys('url', 'name', 'size');
+        tfsClient.removeFile(320, 'logo.png', function (err, success) {
+          should.not.exist(err);
+          should.ok(success);
+          done();
+        });
+      });
+    });
+
+  });
+
 });

@@ -318,4 +318,36 @@ describe('tfs.test.js', function () {
 
   });
 
+  describe('getAppid()', function () {
+    it('should return appid', function (done) {
+      tfsClient.getAppid(function (err, appid) {
+        should.not.exist(err);
+        appid.should.equal('1');
+        done();
+      });
+    });
+
+    it('should return mock error', function (done) {
+      mm.http.requestError('/v2/tfscom/appid', 'get appid error');
+      tfsClient.getAppid(function (err, appid) {
+        should.exist(err);
+        err.name.should.equal('MockHttpRequestError');
+        err.message.should.equal('get appid error');
+        should.not.exist(appid);
+        done();
+      });
+    });
+
+    it('should return mock empty response', function (done) {
+      mm.http.request('/v2/tfscom/appid', '{}');
+      tfsClient.getAppid(function (err, appid) {
+        should.exist(err);
+        err.name.should.equal('TFSRequestError');
+        err.message.should.equal('GET /v2/tfscom/appid return appid is empty');
+        should.not.exist(appid);
+        done();
+      });
+    });
+  });
+
 });

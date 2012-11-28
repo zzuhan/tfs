@@ -33,15 +33,29 @@ function createClient(options);
 
 /**
  * Upload a file.
+
  * @param {String} filepath
- * @param {Number} timeout, default is `client.uploadTimeout`.
  * @param {Function(err, info)} callback
  *  - {Object} info
  *   - {String} name, tfs file name
  *   - {String} url, CDN url
  *   - {Number} size, file size
+ * @param {Number} timeout, default is `client.uploadTimeout`.
  */
-Client.prototype.upload = function (filename, timeout, callback);
+Client.prototype.upload = function (filename, callback, timeout);
+
+/**
+ * Upload a file with custom filename.
+ * 
+ * @param {String} filepath
+ * @param {String} uid, user id
+ * @param {String} filename
+ * @param {Object} [options]
+ *  - {Number} offset
+ * @param {Function(err, info)} callback
+ * @param {Number} [timeout]
+ */
+Client.prototype.uploadFile = function (filepath, uid, filename, options, callback, timeout);
 ```
 
 ## Usage
@@ -54,12 +68,23 @@ var client = tfs.createClient({
   appkey: '$your_appkey',
 });
 
+// 上传文件
 client.upload(filepath, function (err, info) {
   console.log(info);
   // { 
   //   filename: 'T2xRETBgZv1RCvBVdK.jpg', 
-  //   url: 'http://img01.tbcdn.cn/xxx/T2xRETBgZv1RCvBVdK.jpg',
+  //   url: 'http://img1.tbcdn.cn/tfscom/T2xRETBgZv1RCvBVdK.jpg',
   //   size: 1024
+  // }
+});
+
+// 上传自定义文件名的文件
+client.uploadFile(filepath, '320', 'foo.jpg', function (err, info) {
+  console.log(info);
+  // { 
+  //   filename: 'L1/1/320/foo.jpg', 
+  //   url: 'http://img1.tbcdn.cn/L1/1/320/foo.jpg',
+  //   size: 1984
   // }
 });
 ```

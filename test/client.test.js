@@ -1,5 +1,5 @@
 /*!
- * tfs - test/tfs.test.js
+ * tfs - test/client.test.js
  * Copyright(c) 2012 fengmk2 <fengmk2@gmail.com>
  * MIT Licensed
  */
@@ -17,7 +17,7 @@ var mm = require('mm');
 var pedding = require('pedding');
 
 
-describe('tfs.test.js', function () {
+describe('client.test.js', function () {
 
   var tfsClient = tfs.createClient({
     appkey: 'tfscom',

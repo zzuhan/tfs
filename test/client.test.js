@@ -10,10 +10,13 @@
  * Module dependencies.
  */
 
+var fs = require('fs');
+var urlparse = require('url').parse;
 var path = require('path');
 var tfs = require('../');
 var should = require('should');
 var mm = require('mm');
+var http = require('http');
 var pedding = require('pedding');
 
 
@@ -41,6 +44,7 @@ describe('client.test.js', function () {
   });
 
   describe('upload()', function () {
+    
     var client = tfs.createClient({
       appkey: 'tfscom',
       rootServer: '10.232.4.44:3800',
@@ -113,6 +117,16 @@ describe('client.test.js', function () {
       });
     });
 
+    it('should upload timeout', function (done) {
+      mm.http.request(/\/v1\/tfscom/, new Buffer('{}'), {}, 1000000);
+      client.upload(logopath, function (err, info) {
+        should.exist(err);
+        err.message.should.equal('Request timeout for 500ms.');
+        should.not.exist(info);
+        done();
+      }, 500);
+    });
+
     it('should upload return wrong response', function (done) {
       mm.http.request(/\/v1\/tfscom/, new Buffer('{}'), {});
       client.upload(logopath, function (err, info) {
@@ -124,16 +138,97 @@ describe('client.test.js', function () {
       });
     });
 
-    it('should upload timeout', function (done) {
-      mm.http.request(/\/v1\/tfscom/, new Buffer('{}'), {}, 1000000);
-      client.upload(logopath, function (err, info) {
-        should.exist(err);
-        err.message.should.equal('Request timeout for 500ms.');
-        should.not.exist(info);
-        done();
-      }, 500);
+  });
+
+  describe('remove()', function () {
+
+    it('should remove a exists file', function (done) {
+      tfsClient.upload(logopath, function (err, info) {
+        should.not.exist(err);
+        info.should.have.keys('name', 'url', 'size');
+        info.size.should.be.a('number');
+        info.name.should.be.a('string').with.match(/\.png$/);
+        info.url.should.be.a('string').with.match(/\.png$/);
+        info.url.should.include('http://img01.daily.taobaocdn.net/tfscom/');
+        var options = urlparse(info.url);
+        var req = http.get(options, function (res) {
+          res.should.status(200);
+          res.should.header('Content-Type', 'image/png');
+          tfsClient.remove(info.name, function (err, success) {
+            should.not.exist(err);
+            should.ok(success);
+            var options = urlparse(info.url);
+            var req = http.get(options, function (res) {
+              res.should.status(404);
+              done();
+            });
+          });
+        });
+      });
     });
-    
+
+    it('should remove not exists file success', function (done) {
+      tfsClient.remove('T14H4cXilgXXXXXXXX.png', function (err, success) {
+        should.not.exist(err);
+        should.ok(success);
+        done();
+      });
+    });
+
+    it('should hide a file and show it, and delete it', function (done) {
+      tfsClient.upload(logopath, function (err, info) {
+        should.not.exist(err);
+        var options = urlparse(info.url);
+        var req = http.get(options, function (res) {
+          res.should.status(200);
+          res.should.header('Content-Type', 'image/png');
+          // hide it
+          tfsClient.remove(info.name, { hide: 1 }, function (err, success) {
+            should.not.exist(err);
+            should.ok(success);
+            var options = urlparse(info.url);
+            var req = http.get(options, function (res) {
+              res.should.status(404);
+
+              // show it
+              tfsClient.remove(info.name, { hide: 0 }, function (err, success) {
+                should.not.exist(err);
+                should.ok(success);
+                var options = urlparse(info.url);
+                var req = http.get(options, function (res) {
+                  res.should.status(200);
+                  res.should.header('Content-Type', 'image/png');
+
+                  // delete it
+                  tfsClient.remove(info.name, function (err, success) {
+                    should.not.exist(err);
+                    should.ok(success);
+                    var options = urlparse(info.url);
+                    var req = http.get(options, function (res) {
+                      res.should.status(404);
+                      done();
+                    });
+                  });
+
+                });
+              });
+
+            });
+          });
+        });
+      });
+    });
+
+    it('should return request error', function (done) {
+      mm.http.requestError(/\/v1\/tfscom/, 'mock request() error');
+      tfsClient.remove('T14H4cXilgXXXXXXXX.png', function (err, success) {
+        should.exist(err);
+        err.message.should.equal('mock request() error');
+        should.not.exist(success);
+        done();
+      });
+    });
+
   });
 
   describe('refreshServers()', function () {

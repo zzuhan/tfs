@@ -1,18 +1,16 @@
 tfs
 =======
 
-![logo](http://gitlab.alibaba-inc.com/node-tfs/blob/master/logo.png)
+![logo](https://raw.github.com/fengmk2/tfs/master/logo.png)
 
-TFS 的nodejs客户端，[TFS文档](http://baike.corp.taobao.com/index.php/CS_RD/tfs_new)
+[TFS: Taobao FileSystem](http://code.taobao.org/p/tfs/src/) nodejs client.
 
-* jscoverage: [100%](http://fengmk2.github.com/coverage/node-tfs.html)
-* [TFS RESTful Web Service](http://baike.corp.taobao.com/index.php/CS_RD/tfs/use_web_service)
+* jscoverage: [98%](http://fengmk2.github.com/coverage/tfs.html)
 
 ## Install
 
 ```bash
-$ npm install tnpm -g
-$ tnpm install tfs
+$ npm install tfs
 ```
 
 ## Usage
@@ -25,22 +23,22 @@ var client = tfs.createClient({
   appkey: '$your_appkey',
 });
 
-// 上传文件
+// upload normal file
 client.upload(filepath, function (err, info) {
   console.log(info);
   // { 
   //   filename: 'T2xRETBgZv1RCvBVdK.jpg', 
-  //   url: 'http://img1.tbcdn.cn/tfscom/T2xRETBgZv1RCvBVdK.jpg',
+  //   url: 'http://img1.tfs.com/tfscom/T2xRETBgZv1RCvBVdK.jpg',
   //   size: 1024
   // }
 });
 
-// 上传自定义文件名的文件
+// upload custom name file
 client.uploadFile(filepath, '320', 'foo.jpg', function (err, info) {
   console.log(info);
   // { 
-  //   filename: 'L1/1/320/foo.jpg', 
-  //   url: 'http://img1.tbcdn.cn/L1/1/320/foo.jpg',
+  //   filename: 'L1/1/320/foo.jpg',
+  //   url: 'http://img1.tfs.com/L1/1/320/foo.jpg',
   //   size: 1984
   // }
 });
@@ -98,10 +96,6 @@ Client.prototype.uploadFile = function (filepath, uid, filename, options, callba
  */
 Client.prototype.removeFile = function (uid, filename, callback, timeout);
 ```
-
-## Contact
-
-* ![mk2](http://aita.alibaba-inc.com/avatar/4451-180-20110818155148.jpeg) [苏千](http://aita.alibaba-inc.com/043624)
 
 ## Authors
 

@@ -1,6 +1,6 @@
 {
   "name": "tfs",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "TFS: Taobao FileSystem nodejs client, http://code.taobao.org/p/tfs/src/",
   "main": "index.js",
   "scripts": {

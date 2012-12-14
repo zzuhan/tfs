@@ -1,4 +1,13 @@
 
+0.1.0 / 2012-12-14 
+==================
+
+  * support getMeta()
+  * fixed download test cases
+  * support download() file
+  * add MIT License
+  * publish to github
+
 0.0.4 / 2012-12-01 
 ==================
 

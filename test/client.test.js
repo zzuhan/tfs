@@ -19,6 +19,7 @@ var mm = require('mm');
 var http = require('http');
 var pedding = require('pedding');
 
+var TMPDIR = process.env.TMPDIR || '/tmp';
 
 describe('client.test.js', function () {
 
@@ -493,8 +494,7 @@ describe('client.test.js', function () {
     });
 
     it('should return success', function (done) {
-      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
-      fs.unlinkSync(tmpfile);
+      var tmpfile = path.join(TMPDIR, 'tfs_downloadfile');
       tfsClient.download(name, tmpfile, function (err, success) {
         should.not.exist(err);
         should.ok(success);
@@ -504,8 +504,7 @@ describe('client.test.js', function () {
     });
 
     it('should work with offset and size', function (done) {
-      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
-      fs.unlinkSync(tmpfile);
+      var tmpfile = path.join(TMPDIR, 'tfs_downloadfile');
       tfsClient.download(name, tmpfile, { offset: 0, size: 100 }, function (err, success) {
         should.not.exist(err);
         should.ok(success);
@@ -520,8 +519,7 @@ describe('client.test.js', function () {
     });
 
     it('should download all data when size not set', function (done) {
-      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
-      fs.unlinkSync(tmpfile);
+      var tmpfile = path.join(TMPDIR, 'tfs_downloadfile');
       tfsClient.download(name, tmpfile, { offset: 0 }, function (err, success) {
         should.not.exist(err);
         should.ok(success);
@@ -531,8 +529,7 @@ describe('client.test.js', function () {
     });
 
     it('should return error when name not exists file', function (done) {
-      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
-      fs.unlinkSync(tmpfile);
+      var tmpfile = path.join(TMPDIR, 'tfs_downloadfile');
       tfsClient.download('T1AjmyXgRfXXXXXXX.png', tmpfile, function (err, success) {
         should.exist(err);
         err.name.should.equal('TFSRequestError');

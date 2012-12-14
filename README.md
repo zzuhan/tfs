@@ -74,6 +74,40 @@ function createClient(options);
 Client.prototype.upload = function (filename, callback, timeout);
 
 /**
+ * Remove a file by name.
+ * 
+ * @param {String} name
+ * @param {Object} [options]
+ *  - {Number|String} hide, 1: hidden, 0: show
+ * @param {Function(err, success)} callback
+ * @param {Number} timeout, default is `client.uploadTimeout`.
+ */
+Client.prototype.remove = function (name, options, callback, timeout);
+
+/**
+ * Download a file by name.
+ * 
+ * @param {String} name
+ * @param {String|WriteStream} savefile, save file path or writable stream.
+ * @param {Object} [options]
+ *  - {Number} offset
+ *  - {Number} size
+ * @param {Function(err, success)} callback
+ * @param {Number} timeout, default is `client.uploadTimeout`.
+ */
+Client.prototype.download = function (name, savefile, options, callback, timeout);
+
+/**
+ * Get file meta.
+ * @param {String} name
+ * @param {Object} [options]
+ *  - {Number} type, 0: normal mode, 1: force mode, get meta info even it was deleted.
+ * @param {Function(err, meta)} callback
+ * @param {Number} timeout
+ */
+Client.prototype.getMeta = function (name, options, callback, timeout);
+
+/**
  * Upload a file with custom filename.
  * 
  * @param {String} filepath
@@ -102,13 +136,14 @@ Client.prototype.removeFile = function (uid, filename, callback, timeout);
 ```bash
 $ git summary 
 
- project  : node-tfs
- repo age : 10 days
- active   : 4 days
- commits  : 18
+ project  : tfs
+ repo age : 2 weeks
+ active   : 5 days
+ commits  : 23
  files    : 15
  authors  : 
-    18  苏千                  100.0%
+    19  苏千                  82.6%
+     4  fengmk2                 17.4%
 ```
 
 ## License 

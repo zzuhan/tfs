@@ -477,4 +477,72 @@ describe('client.test.js', function () {
 
   });
 
+  describe('download()', function () {
+    var name = null;
+    before(function (done) {
+      tfsClient.upload(logopath, function (err, info) {
+        should.not.exist(err);
+        should.exist(info);
+        name = info.name;
+        done();
+      });
+    });
+
+    after(function (done) {
+      tfsClient.remove(name, done);
+    });
+
+    it('should return success', function (done) {
+      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
+      fs.unlinkSync(tmpfile);
+      tfsClient.download(name, tmpfile, function (err, success) {
+        should.not.exist(err);
+        should.ok(success);
+        fs.statSync(logopath).size.should.equal(fs.statSync(tmpfile).size);
+        done();
+      });
+    });
+
+    it('should work with offset and size', function (done) {
+      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
+      fs.unlinkSync(tmpfile);
+      tfsClient.download(name, tmpfile, { offset: 0, size: 100 }, function (err, success) {
+        should.not.exist(err);
+        should.ok(success);
+        fs.statSync(tmpfile).size.should.equal(100);
+        tfsClient.download(name, tmpfile, { offset: 100, size: 1000 }, function (err, success) {
+          should.not.exist(err);
+          should.ok(success);
+          fs.statSync(tmpfile).size.should.equal(1000);
+          done();
+        });
+      });
+    });
+
+    it('should download all data when size not set', function (done) {
+      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
+      fs.unlinkSync(tmpfile);
+      tfsClient.download(name, tmpfile, { offset: 0 }, function (err, success) {
+        should.not.exist(err);
+        should.ok(success);
+        fs.statSync(logopath).size.should.equal(fs.statSync(tmpfile).size);
+        done();
+      });
+    });
+
+    it('should return error when name not exists file', function (done) {
+      var tmpfile = path.join(process.env.TMPDIR, 'tfs_downloadfile');
+      fs.unlinkSync(tmpfile);
+      tfsClient.download('T1AjmyXgRfXXXXXXX.png', tmpfile, function (err, success) {
+        should.exist(err);
+        err.name.should.equal('TFSRequestError');
+        err.status.should.equal(404);
+        should.ok(!success);
+        fs.readFileSync(tmpfile, 'utf8').should.include('404 Not Found');
+        done();
+      });
+    });
+
+  });
+
 });

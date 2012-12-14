@@ -9,7 +9,7 @@
   "dependencies": {
     "debug": "0.7.0",
     "eventproxy": "0.2.1",
-    "urllib": "0.3.2"
+    "urllib": "0.3.3"
   },
   "devDependencies": {
     "should": "*",

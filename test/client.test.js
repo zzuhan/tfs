@@ -542,4 +542,100 @@ describe('client.test.js', function () {
 
   });
 
+  describe('getMeta()', function () {
+    var name = null;
+    before(function (done) {
+      tfsClient.upload(logopath, function (err, info) {
+        should.not.exist(err);
+        should.exist(info);
+        name = info.name;
+        done();
+      });
+    });
+
+    after(function (done) {
+      tfsClient.remove(name, function () {
+        done();
+      });
+    });
+
+    it('should return file info', function (done) {
+      done = pedding(2, done);
+
+      tfsClient.getMeta(name, function (err, meta) {
+        should.not.exist(err);
+        meta.should.have.keys('FILE_NAME', 'BLOCK_ID', 'FILE_ID',
+          'OFFSET', 'SIZE', 'OCCUPY_SIZE', 'MODIFY_TIME', 'CREATE_TIME', 'STATUS', 'CRC');
+
+        tfsClient.getMeta(name, { type: 1 }, function (err, meta) {
+          should.not.exist(err);
+          meta.should.have.keys('FILE_NAME', 'BLOCK_ID', 'FILE_ID',
+            'OFFSET', 'SIZE', 'OCCUPY_SIZE', 'MODIFY_TIME', 'CREATE_TIME', 'STATUS', 'CRC');
+          done();
+        });
+
+        tfsClient.getMeta(name, { type: 0 }, function (err, meta) {
+          should.not.exist(err);
+          meta.should.have.keys('FILE_NAME', 'BLOCK_ID', 'FILE_ID',
+            'OFFSET', 'SIZE', 'OCCUPY_SIZE', 'MODIFY_TIME', 'CREATE_TIME', 'STATUS', 'CRC');
+          done();
+        });
+      });
+    });
+
+    it('should return 404 error when name not exists', function (done) {
+      tfsClient.getMeta('T1AjmyXgRfXXXXXXX.png', function (err, meta) {
+        should.exist(err);
+        err.name.should.equal('TFSRequestError');
+        err.status.should.equal(404);
+        should.not.exist(meta);
+        done();
+      });
+    });
+
+    it('should return json parse error', function (done) {
+      mm.http.request(/\/v1\/tfscom/, new Buffer(''), {});
+      tfsClient.getMeta(name, function (err, meta) {
+        should.exist(err);
+        err.name.should.equal('SyntaxError');
+        err.message.should.equal('Unexpected end of input');
+        should.not.exist(meta);
+        done();
+      });
+    });
+
+    it('should return meta after file delete', function (done) {
+      done = pedding(3, done);
+      tfsClient.remove(name, function (err, success) {
+        should.not.exist(err);
+        should.ok(success);
+
+        tfsClient.getMeta(name, function (err, meta) {
+          should.exist(err);
+          err.name.should.equal('TFSRequestError');
+          err.status.should.equal(404);
+          should.not.exist(meta);
+          done();
+        });
+
+        tfsClient.getMeta(name, { type: 0 }, function (err, meta) {
+          should.exist(err);
+          err.name.should.equal('TFSRequestError');
+          err.status.should.equal(404);
+          should.not.exist(meta);
+          done();
+        });
+
+        tfsClient.getMeta(name, { type: 1 }, function (err, meta) {
+          should.not.exist(err);
+          meta.should.have.keys('FILE_NAME', 'BLOCK_ID', 'FILE_ID',
+            'OFFSET', 'SIZE', 'OCCUPY_SIZE', 'MODIFY_TIME', 'CREATE_TIME', 'STATUS', 'CRC');
+          done();
+        });
+
+      });
+    });
+
+  });
+
 });
